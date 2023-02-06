@@ -40,6 +40,8 @@ create_ssl () {
   echo "The computer's password is required for HTTPS certificates generation and acceptance:"
   # Generate SSL for nginx
   sudo rm -r ./nginx/certs/*
+  # Generate Directory
+  mkdir ./nginx/certs
   # Generate Certificate for https tls ssl
   openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=localhost" -addext "subjectAltName=DNS.1:document.localhost,DNS.2:pgadmin.localhost,DNS.3:jupyter.localhost" -newkey rsa:2048 -keyout ./nginx/certs/nginx-selfsigned.key -out ./nginx/certs/nginx-selfsigned.crt;
   # Remove Certificate if Exists
