@@ -1,0 +1,106 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:1.23.3-alpine
+    restart: unless-stopped
+    ports:
+      # only localhost can access the ports
+      - 127.0.0.1:80:80
+      - 127.0.0.1:443:443
+    networks:
+      - clinical_backend
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      - flask
+
+  flask:
+    container_name: clinical_flask
+    restart: unless-stopped
+    image: andrewlimmer/clinical-document-flask:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - env-variables.txt
+    volumes:
+      - db_data_volume:/home/data
+      - ./postgresql/exports:/home/exports
+    networks:
+      - clinical_backend
+    command:
+      gunicorn -w 4 --timeout 120 --bind 0.0.0.0:5000 wsgi:app
+
+  db:
+    container_name: clinical_db
+    image: andrewlimmer/clinical-document-db:latest
+    restart: unless-stopped
+    env_file:
+      - env-variables.txt
+    volumes:
+      - db_volume:/usr/local/pgsql/data
+    networks:
+      - clinical_backend
+    healthcheck:
+      test: [ "CMD-SHELL","pg_isready", "-U", "admin", "-d", "clinical"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+      start_period: 2s
+
+  pgadmin:
+    container_name: clinical_pgadmin
+    image: dpage/pgadmin4:6.16
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - env-variables.txt
+    volumes:
+      - pgadmin_volume:/var/lib/pgadmin4
+    networks:
+     - clinical_backend
+
+  jupyter:
+    container_name: jupyter
+    image: andrewlimmer/clinical-document-jupyter:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    env_file:
+      - env-variables.txt
+    volumes:
+      # Code map
+      - ./jupyter/work:/home/jovyan
+      - db_data_volume:/home/data
+    networks:
+     - clinical_backend
+    ports:
+      - 5053:80
+
+  backup:
+    container_name: backup
+    image: andrewlimmer/clinical-document-backup:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - env-variables.txt
+    volumes:
+      - db_data_volume:/home/data
+    networks:
+      - clinical_backend
+
+networks:
+  clinical_backend:
+
+volumes:
+  db_data_volume:
+  db_volume:
+  pgadmin_volume:
