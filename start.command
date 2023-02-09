@@ -15,17 +15,19 @@ esac
 echo "OS: ${machine}"
 
 # Check if Git Exists
-if ! command -v git &> /dev/null
-then
+while ! command -v git &> /dev/null
+do
   echo "The computer's password is required for GIT Installation:"
   # Install BrewHub
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo "Install Git"
   brew install git
-fi
+done
+
 
 # Check OpenSSL Version
-if [[ $(openssl version | awk '{print $1}') != "OpenSSL" && $(openssl version | awk '{print $2}') != "1.1.1s" ]]; then
+while [[ $(openssl version | awk '{print $1}') != "OpenSSL" && $(openssl version | awk '{print $2}') != "1.1.1s" ]]
+do
   echo "The computer's password is required for OpenSSL installation:"
   # Install BrewHub
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -34,10 +36,11 @@ if [[ $(openssl version | awk '{print $1}') != "OpenSSL" && $(openssl version | 
   brew link --force openssl@1.1
   echo 'export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"' >> ~/.zshrc
   source ~/.zshrc
-fi
+done
 
 create_ssl () {
   echo "The computer's password is required for HTTPS certificates generation and acceptance:"
+
   # Generate SSL for nginx
   sudo rm -r ./nginx/certs/*
   # Generate Directory
@@ -61,30 +64,32 @@ create_encryption_key() {
   echo
 
   # Enter Encryption Key
-  while [[ ! (${#encryption_key} == 64 && -z ${encryption_key//[[:digit:][:lower:]]}) ]]
+  while [[ ! $encryption_key =~ ^[a-f0-9]{64}$ ]]
   do
-    echo "Enter Encryption Key: (64 characters; lower case letters and numbers allowed)"
+    echo "Enter Encryption Key: (64 Hexadecimal; lower case letters [a-f] and numbers allowed)"
     read -s encryption_key
     echo "length:${#encryption_key}"
+    echo $encryption_key
   done
 }
 
 # Pull GitHub
 git pull
 
-
 # Generate SSL Certificate and Key
 nginx_key=./nginx/certs/nginx-selfsigned.key
 nginx_crt=./nginx/certs/nginx-selfsigned.crt
 # Check if files do not exist
-if (! [[ -f "$nginx_key" ]]) || (! [[ -f "$nginx_crt" ]] ); then
+while (! [[ -f "$nginx_key" ]]) || (! [[ -f "$nginx_crt" ]] )
+do
   create_ssl
-fi
+done
 
 # Check if file existed for > 30 days
-if [[ $(find "$filename" -mtime +30 -print) ]]; then
+while [[ $(find "$filename" -mtime +30 -print) ]]
+do
   create_ssl
-fi
+done
 
 # Create Encryption Key
 create_encryption_key
