@@ -17,7 +17,6 @@ _____________________________
 Easily Annotate Clinical documents
 
 ### Basic Clinical Data Annotation
-Annotate basic patient demographics
 
 https://user-images.githubusercontent.com/8246436/217722512-f6712c22-95f8-463f-9640-8dfca1444a63.mov
 
@@ -45,8 +44,8 @@ Easily generate kaplan meier cures
 https://user-images.githubusercontent.com/8246436/217722643-6a481112-96f7-4d81-b1fd-6bc0429c4d05.mov
 
 ### Jupyter Notebook
-
 Full access to analytics workbook including R-Statistics, Julia, and Python libraries
+
 https://user-images.githubusercontent.com/8246436/217724325-3fae5ec0-1a82-4be5-9f0b-d77493f88fac.mp4
 
 
