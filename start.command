@@ -14,13 +14,23 @@ case "${unameOut}" in
 esac
 echo "OS: ${machine}"
 
+# Install Homebrew
+which -s brew
+if [[ $? != 0 ]] ; then
+  # Install Homebrew
+  echo 'Install Homebrew'
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.bash_profile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+else
+  echo 'Update Homebrew'
+  brew update
+fi
+
 # Check if Git Exists
 while ! command -v git &> /dev/null
 do
   echo "The computer's password is required for GIT Installation:"
-  # Install BrewHub
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  echo "Install Git"
   brew install git
 done
 
@@ -29,8 +39,6 @@ done
 while [[ $(openssl version | awk '{print $1}') != "OpenSSL" && $(openssl version | awk '{print $2}') != "1.1.1s" ]]
 do
   echo "The computer's password is required for OpenSSL installation:"
-  # Install BrewHub
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   # Install OpenSSL
   brew install openssl@1.1
   brew link --force openssl@1.1
@@ -55,7 +63,7 @@ create_ssl () {
 
 create_encryption_key() {
   echo
-  echo "Randomly Generated Encryption Keys (256-bit):"
+  echo "Randomly Generated (256-bit) Encryption Keys:"
   openssl rand -hex 32
   openssl rand -hex 32
   openssl rand -hex 32
@@ -66,10 +74,9 @@ create_encryption_key() {
   # Enter Encryption Key
   while [[ ! $encryption_key =~ ^[a-f0-9]{64}$ ]]
   do
-    echo "Enter Encryption Key: (64 Hexadecimal; lower case letters [a-f] and numbers allowed)"
+    echo "Enter Encryption Key: (64 Hexadecimal; lower case letters [a-f] and numbers allowed):"
     read -s encryption_key
     echo "length:${#encryption_key}"
-    echo $encryption_key
   done
 }
 
@@ -105,7 +112,7 @@ echo "PGADMIN_LISTEN_ADDRESS=0.0.0.0" >> ./env-variables.txt
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up
+docker compose up --build
 
 # Remove Environment Variables
 rm ./env-variables.txt
