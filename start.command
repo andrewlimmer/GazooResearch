@@ -24,7 +24,7 @@ if [[ $? != 0 ]] ; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo 'Update Homebrew'
-  brew update
+  #brew update
 fi
 
 # Check if Git Exists

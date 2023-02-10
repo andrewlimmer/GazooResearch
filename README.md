@@ -74,7 +74,9 @@ Ref: [https://mac.install.guide/homebrew/index.html](https://mac.install.guide/h
 
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.bash_profile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+  
 # Install OpenSSL
 brew install openssl@1.1
 brew link --force openssl@1.1
@@ -84,6 +86,13 @@ source ~/.zshrc
 # Install Git
 brew install git
 ```
+### Grant Priviliges
+
+System Preference > Privacy & Security
+Grant "Terminal" and "Docker" access
+
+Most errors in installation are predmoniantly derived from permission errors. 
+![](readme_images/security.png)
 
 
 # Start Clinical Document
