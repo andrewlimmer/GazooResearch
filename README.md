@@ -37,7 +37,6 @@ Define custom data structures
 https://user-images.githubusercontent.com/8246436/217726292-1ff3c2cd-85af-4f9d-ad5e-5c54aab876d7.mp4
 
 
-
 ### Timelines
 View patient timelines
 
@@ -69,6 +68,11 @@ Ref: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/
 
 ### Install Git and OpenSSL 
 Ref: [https://mac.install.guide/homebrew/index.html](https://mac.install.guide/homebrew/index.html)
+
+Open Terminal.app:<br>
+- Applications > Utilities > Terminal
+
+Copy & Paste the following commands in the "Terminal" application<br>
 
 ``` 
 
