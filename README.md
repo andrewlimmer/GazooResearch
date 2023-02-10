@@ -14,7 +14,12 @@ _____________________________
     - [Jupyter Notebook](#jupyter)
 
 # Overview
-Easily Annotate Clinical documents
+Easily annotate clinical documents, and enable data aggrigation.
+
+### Distributed Databases
+Individual local databases can easily be merged to create large data stores<br>
+![](readme_images/distributed-database.png)
+
 
 ### Basic Clinical Data Annotation
 
