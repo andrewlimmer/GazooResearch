@@ -16,9 +16,9 @@ _____________________________
 # Overview
 Easily annotate clinical documents, and data aggrigation
 
-### Distributed Databases
+### Aggrigate Databases
 Individual local databases can easily be merged to create large data stores<br>
-![](readme_images/distributed-database.png)
+![](readme_images/aggrigate-database.png)
 
 
 ### Basic Clinical Data Annotation
