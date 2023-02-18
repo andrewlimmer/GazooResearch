@@ -2,13 +2,17 @@ import os
 import psycopg2
 from psycopg2 import Error
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load Secrets
+load_dotenv("/run/secrets/postgresql_secret")
 
 class db:
     def __init__(self):
         try:
             # Connect to an existing database
-            self.connection = psycopg2.connect(user=os.environ.get('POSTGRES_USER'),
-                                                password=os.environ.get('POSTGRES_PASSWORD'),
+            self.connection = psycopg2.connect(user=os.getenv('POSTGRES_USER'),
+                                                password=os.getenv('POSTGRES_PASSWORD'),
                                                 host="clinical_db",
                                                 port="5432",
                                                 database="clinical",

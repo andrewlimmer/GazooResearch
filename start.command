@@ -130,7 +130,7 @@ echo "JUPYTER_TOKEN=$encryption_key" >> ./postgresql-secret.txt
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up -d
+docker compose up
 
 # Remove Environment Variables
 rm ./postgresql-secret.txt
