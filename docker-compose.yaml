@@ -18,10 +18,7 @@ services:
   flask:
     container_name: clinical_flask
     restart: unless-stopped
-    build:
-      context: ./
-      dockerfile: ./flask/Dockerfile
-      network: host
+    image: andrewlimmer/clinical-document-flask:latest
     depends_on:
       db:
         condition: service_healthy
@@ -37,10 +34,7 @@ services:
 
   db:
     container_name: clinical_db
-    build:
-      context: ./
-      network: host
-      dockerfile: ./postgresql/Dockerfile
+    image: andrewlimmer/clinical-document-db:latest
     restart: unless-stopped
     secrets:
       - postgresql_secret
@@ -71,10 +65,7 @@ services:
 
   jupyter:
     container_name: jupyter
-    build:
-      context: ./
-      dockerfile: ./jupyter/Dockerfile
-      network: host
+    image: andrewlimmer/clinical-document-jupyter:latest
     depends_on:
       db:
         condition: service_healthy
@@ -96,10 +87,7 @@ services:
 
   backup:
     container_name: backup
-    build:
-      context: ./
-      dockerfile: ./backup/Dockerfile
-      network: host
+    image: andrewlimmer/clinical-document-backup:latest
     restart: unless-stopped
     depends_on:
       db:
