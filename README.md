@@ -19,6 +19,10 @@ Easily annotate clinical documents, and data aggrigation
 Individual local databases can easily be merged to create large data stores<br>
 ![](readme_images/aggrigate-database.png)
 
+### Import pdf, docx, images, text files
+Import documents that are pdfs, docx, images, and text files
+
+https://user-images.githubusercontent.com/8246436/219845376-604022ca-d4db-4f6b-b64f-0d6631831f4e.mp4
 
 ### Basic Clinical Data Annotation
 
