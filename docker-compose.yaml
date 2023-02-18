@@ -18,26 +18,32 @@ services:
   flask:
     container_name: clinical_flask
     restart: unless-stopped
-    image: andrewlimmer/clinical-document-flask:latest
+    build:
+      context: ./
+      dockerfile: ./flask/Dockerfile
+      network: host
     depends_on:
       db:
         condition: service_healthy
-    env_file:
-      - env-variables.txt
+    secrets:
+      - postgresql_secret
     volumes:
-      - db_data_volume:/home/data
-      - ./postgresql/exports:/home/exports
+      - db_data_volume:/home/gazoo/data
+      - ./postgresql/exports:/home/gazoo/exports
     networks:
       - clinical_backend
     command:
-      gunicorn -w 4 --timeout 120 --bind 0.0.0.0:5000 wsgi:app
+      bash -c "gunicorn -w 4 --timeout 120 --bind 0.0.0.0:5000 wsgi:app"
 
   db:
     container_name: clinical_db
-    image: andrewlimmer/clinical-document-db:latest
+    build:
+      context: ./
+      network: host
+      dockerfile: ./postgresql/Dockerfile
     restart: unless-stopped
-    env_file:
-      - env-variables.txt
+    secrets:
+      - postgresql_secret
     volumes:
       - db_volume:/usr/local/pgsql/data
     networks:
@@ -51,7 +57,7 @@ services:
 
   pgadmin:
     container_name: clinical_pgadmin
-    image: dpage/pgadmin4:6.16
+    image: dpage/pgadmin4:6.20
     depends_on:
       db:
         condition: service_healthy
@@ -65,7 +71,10 @@ services:
 
   jupyter:
     container_name: jupyter
-    image: andrewlimmer/clinical-document-jupyter:latest
+    build:
+      context: ./
+      dockerfile: ./jupyter/Dockerfile
+      network: host
     depends_on:
       db:
         condition: service_healthy
@@ -74,26 +83,31 @@ services:
       - JUPYTER_ENABLE_LAB=yes
     env_file:
       - env-variables.txt
+    secrets:
+      - postgresql_secret
     volumes:
       # Code map
       - ./jupyter/work:/home/jovyan
       - db_data_volume:/home/data
     networks:
      - clinical_backend
-    ports:
-      - 5053:80
+    command:
+      bash /home/start.sh
 
   backup:
     container_name: backup
-    image: andrewlimmer/clinical-document-backup:latest
+    build:
+      context: ./
+      dockerfile: ./backup/Dockerfile
+      network: host
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
-    env_file:
-      - env-variables.txt
+    secrets:
+      - postgresql_secret
     volumes:
-      - db_data_volume:/home/data
+      - db_data_volume:/home/gazoo/data
     networks:
       - clinical_backend
 
@@ -104,3 +118,7 @@ volumes:
   db_data_volume:
   db_volume:
   pgadmin_volume:
+
+secrets:
+  postgresql_secret:
+    file: ./postgresql-secret.txt

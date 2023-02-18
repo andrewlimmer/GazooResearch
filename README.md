@@ -2,7 +2,6 @@
 
 An annotation tool for clinical documents
 
-
 # Summary
 _____________________________
 
@@ -90,6 +89,9 @@ source ~/.zshrc
 
 # Install Git
 brew install git
+
+# Install wget
+brew install wget
 ```
 ### Grant Priviliges
 
@@ -165,7 +167,7 @@ https://pgadmin.localhost/
 Login using default email and password<br>
 ```
 email: admin@admin.com
-password: <256-bit encryption key>
+password: KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue
 ```
 
 ![pgadmin_login.png](readme_images/pgadmin_login.png)
@@ -201,7 +203,6 @@ https://jupyter.localhost/
 ```
 Enter Default Token
 ```
-token: KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue
+token: <256-bit encryption key>
 ```
 ![jupyter_token.png](readme_images/jupyter_token.png)
-

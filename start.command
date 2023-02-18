@@ -117,16 +117,20 @@ create_encryption_key
 
 # Write Environment Variables File
 rm ./env-variables.txt
-echo "POSTGRES_USER=admin" >> ./env-variables.txt
-echo "POSTGRES_PASSWORD=$encryption_key" >> ./env-variables.txt
-echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./env-variables.txt
 echo "PGADMIN_DEFAULT_EMAIL=admin@admin.com" >> ./env-variables.txt
-echo "PGADMIN_DEFAULT_PASSWORD=$encryption_key" >> ./env-variables.txt
+echo "PGADMIN_DEFAULT_PASSWORD=KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue" >> ./env-variables.txt
 echo "PGADMIN_LISTEN_ADDRESS=0.0.0.0" >> ./env-variables.txt
+
+# Secret
+rm ./postgresql-secret.txt
+echo "POSTGRES_USER=admin" >> ./postgresql-secret.txt
+echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql-secret.txt
+echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql-secret.txt
+echo "JUPYTER_TOKEN=$encryption_key" >> ./postgresql-secret.txt
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up --build
+docker compose up -d
 
 # Remove Environment Variables
-rm ./env-variables.txt
+rm ./postgresql-secret.txt
