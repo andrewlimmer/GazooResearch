@@ -12,6 +12,7 @@ services:
     volumes:
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/certs:/etc/nginx/certs
+      # - ./nginx/.htpasswd:/etc/nginx/.htpasswd
     depends_on:
       - flask
 
@@ -31,8 +32,6 @@ services:
       - ./logs:/home/gazoo/logs
     networks:
       - clinical_backend
-    ports:
-      - 5000:5000
 
   db:
     container_name: clinical_db
@@ -84,7 +83,6 @@ services:
       - db_data_volume:/home/data
     networks:
      - clinical_backend
-
 
 networks:
   clinical_backend:
