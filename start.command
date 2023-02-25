@@ -136,10 +136,10 @@ echo "PGADMIN_LISTEN_ADDRESS=0.0.0.0" >> ./env-variables.txt
 echo "JUPYTER_TOKEN=KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue" >> ./env-variables.txt
 
 # Secret
-rm ./postgresql/certs/postgresql-secret.txt
-echo "POSTGRES_USER=admin" >> ./postgresql/certs/postgresql-secret.txt
-echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql/certs/postgresql-secret.txt
-echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/certs/postgresql-secret.txt
+rm ./postgresql/secrets/postgresql-secret.txt
+echo "POSTGRES_USER=admin" >> ./postgresql/secrets/postgresql-secret.txt
+echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql/secrets/postgresql-secret.txt
+echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/secrets/postgresql-secret.txt
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
