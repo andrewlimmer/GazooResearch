@@ -143,5 +143,5 @@ echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/secrets/post
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up -d
+docker compose up
 
