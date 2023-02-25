@@ -1,25 +1,59 @@
-from db_lib import db
-from collections.abc import Iterable
+import getpass
 import pandas as pd
+from collections.abc import Iterable
+
+import psycopg2
+from psycopg2 import Error
+from pathlib import Path
+
 
 class Patient:
     '''A class to interface '''
-    def __init__(self, mrn):
+    def __init__(self):
+        '''Connect To Database'''
+        print("Connect To Database")
+        try:            
+            # Connect to an existing database
+            self.connection = psycopg2.connect(user=getpass.getpass(prompt='username:'),
+                                                password=getpass.getpass(prompt='encryption key:'),
+                                                host="clinical_db",
+                                                port="5432",
+                                                database="clinical",
+                                                # Schemas
+                                                options="-c search_path=clinical_document,rad_onc,public")
+
+            # Print PostgreSQL details
+            self.cursor = self.connection.cursor()
+        except (Exception, Error) as error:
+            print("Error while connecting to PostgreSQL: ", error)
+            
+        return
+    
+    def __del__(self):
+        '''Disconnect from Database'''
+        if hasattr(self, 'connection'):
+            self.connection.close()
+        return
+    
+    def load_mrn(self, mrn):
             self.mrn = str(mrn)
-            #Interface with the database
-            cursor = db()
 
             #First check if mrn exists
             sql = f"SELECT exists (SELECT 1 FROM clinical_document.q_document WHERE mrn = '{mrn}' LIMIT 1)"
-            mrn_exists = cursor.sql(sql)[0][0]
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
+            mrn_exists = data[0][0]
             if not mrn_exists:
                 raise ValueError("MRN number not found in the database")
             
             #Gets all the attributes from postgres database.
             sql = f"SELECT DISTINCT tag FROM clinical_document.q_document WHERE mrn = '{mrn}'"
+            self.cursor.execute(sql)
+            data = self.cursor.fetchall()
             
+        
             #psycopg2 returns the data each packed into tuples.  Eg. [(first_name),(last_name)] So that needs to be unpacked.
-            self.attributes = list(map(lambda a : a[0],cursor.sql(sql))) 
+            self.attributes = list(map(lambda a : a[0],data)) 
             if "mrn" in self.attributes:
                 self.attributes.remove("mrn")
     
@@ -42,9 +76,10 @@ class Patient:
         1. There is a bug in setting an attribute due to a weird data entry or something else.
         2. It is hard to access a single cell of data in a DataFrame.  A dictionary is a lot easier. 
         '''
-        cursor = db()
+
         sql = f" SELECT attribute FROM clinical_document.q_document WHERE mrn = '{self.mrn}' AND tag = '{attribute}'" #Gets all rows of data for each attribute
-        unformatted_data = cursor.sql(sql)
+        self.cursor.execute(sql)
+        unformatted_data = self.cursor.fetchall()
         try:
             unformatted_data = list(map(lambda a : a[0], unformatted_data))
         except: 
@@ -84,45 +119,4 @@ class Patient:
             raise ValueError("Index should be the name of an attribute or a list of such.  For example, p['first_name'] or p['first_name','last_name']")
     
     
-    @staticmethod
-    def fetch_mrns():
-        '''Returns a list of all the mrns found in the database'''
-        sql = "SELECT DISTINCT mrn FROM clinical_document.q_document"
-        cursor = db()
-        data = cursor.sql(sql)
-        data = sorted(list(map(lambda a : a[0], data)))
-        return data
     
-    @staticmethod
-    def search_name(first_name = None,last_name = None):
-        cursor = db()
-        sql = "SELECT DISTINCT mrn, attribute FROM clinical_document.q_document WHERE tag = 'first_name'"
-        fname = cursor.sql(sql)
-        fname_df = pd.DataFrame(list(map(lambda a : [a[0], *a[1].values()], fname)))
-        fname_df.columns = "mrn","fname"
-
-        sql = "SELECT DISTINCT mrn, attribute FROM clinical_document.q_document WHERE tag = 'last_name'"
-        lname = cursor.sql(sql)
-        lname_df = pd.DataFrame(list(map(lambda a : [a[0], *a[1].values()], lname)))
-        lname_df.columns = "mrn", "lname"
-
-        name_df = fname_df.set_index("mrn").join(lname_df.set_index("mrn"))
-
-        if not first_name and not last_name:
-            return name_df
-        elif first_name and not last_name:
-            return name_df[name_df["fname"].str.contains(first_name, case = False)]
-        elif not first_name and last_name:
-            return name_df[name_df["lname"].str.contains(last_name, case = False)]
-        else:
-            return name_df[(name_df["fname"].str.contains(first_name, case = False)) & (name_df["lname"].str.contains(last_name, case = False))]
-       
-    @staticmethod
-    def search(tag):
-        cursor = db()
-        sql = f"SELECT DISTINCT mrn, attribute FROM clinical_document.q_document WHERE tag = '{tag}'"
-        data = cursor.sql(sql)
-        index = list(map(lambda a : a[0], data))
-        data_df = pd.DataFrame(list(map(lambda a : a[1], data)), index = index)
-        data_df = data_df.sort_index()
-        return data_df

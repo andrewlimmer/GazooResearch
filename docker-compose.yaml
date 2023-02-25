@@ -18,17 +18,15 @@ services:
 
   flask:
     container_name: clinical_flask
-    restart: unless-stopped
     image: andrewlimmer/clinical-document-flask:latest
     depends_on:
       db:
         condition: service_healthy
-    secrets:
-      - postgresql_secret
     volumes:
       - db_data_volume:/home/gazoo/data
       - ./postgresql/exchange:/home/gazoo/exchange
       - ./postgresql/backups:/home/gazoo/backups
+      - ./postgresql/certs:/home/gazoo/certs
       - ./logs:/home/gazoo/logs
     networks:
       - clinical_backend
@@ -36,11 +34,9 @@ services:
   db:
     container_name: clinical_db
     image: andrewlimmer/clinical-document-db:latest
-    restart: unless-stopped
-    secrets:
-      - postgresql_secret
     volumes:
       - db_volume:/usr/local/pgsql/data
+      - ./postgresql/certs:/home/postgres/certs
     networks:
       - clinical_backend
     healthcheck:
@@ -67,16 +63,14 @@ services:
   jupyter:
     container_name: jupyter
     image: andrewlimmer/clinical-document-jupyter:latest
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
-    restart: unless-stopped
     environment:
       - JUPYTER_ENABLE_LAB=yes
     env_file:
       - env-variables.txt
-    secrets:
-      - postgresql_secret
     volumes:
       # Code map
       - ./jupyter/work:/home/jovyan
@@ -91,7 +85,3 @@ volumes:
   db_data_volume:
   db_volume:
   pgadmin_volume:
-
-secrets:
-  postgresql_secret:
-    file: ./postgresql-secret.txt

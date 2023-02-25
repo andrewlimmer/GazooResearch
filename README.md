@@ -61,10 +61,6 @@ https://user-images.githubusercontent.com/8246436/217724325-3fae5ec0-1a82-4be5-9
 ### Install docker
 Mac:<br>
 [https://docs.docker.com/desktop/install/mac-install/](https://docs.docker.com/desktop/install/mac-install/)
-<br>Linux:<br>
-[https://docs.docker.com/desktop/install/linux-install/](https://docs.docker.com/desktop/install/linux-install/)
-<br>Windows:<br>
-[https://docs.docker.com/desktop/install/windows-install/](https://docs.docker.com/desktop/install/windows-install/)
 
 ### Install docker compose
 Install docker-compose if not installed with docker (separate instillation in linux) <br>
@@ -187,7 +183,7 @@ Server Address & Password <br>
 ```
 host name: clinical_db 
 Username: admin
-Password:  <256-bit encryption key> 
+Password: KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue
 ```
 
 ![server_address_password.png](readme_images/server_address_password.png)
@@ -207,6 +203,6 @@ https://jupyter.localhost/
 ```
 Enter Default Token
 ```
-token: <256-bit encryption key>
+token: KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue
 ```
 ![jupyter_token.png](readme_images/jupyter_token.png)

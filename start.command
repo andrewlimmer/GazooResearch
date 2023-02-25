@@ -14,6 +14,12 @@ case "${unameOut}" in
 esac
 echo "OS: ${machine}"
 
+# Make Export File
+# mkdir ./postgresql/exports
+# Linus Installation
+# sudo apt install git-all
+#
+
 echo "Checking internet connection..."
 echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -t2 > /dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -112,25 +118,30 @@ do
   create_ssl
 done
 
+# Create Basic HTTP Authentication Username and Password
+#echo "Create htpasswd"
+#read -p "Username: " USERNAME
+#read -s -p "Password: " PASSWORD; echo
+#printf "${USERNAME}:$(openssl passwd -crypt ${PASSWORD})\n" >> ./nginx/conf/.htpasswd
+
 # Create Encryption Key
 create_encryption_key
+
 
 # Write Environment Variables File
 rm ./env-variables.txt
 echo "PGADMIN_DEFAULT_EMAIL=admin@admin.com" >> ./env-variables.txt
 echo "PGADMIN_DEFAULT_PASSWORD=KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue" >> ./env-variables.txt
 echo "PGADMIN_LISTEN_ADDRESS=0.0.0.0" >> ./env-variables.txt
+echo "JUPYTER_TOKEN=KQgiUJv1tG16A9hgxIhE32JcxdsANZU7eCi9om3Wlq1RUMnAnZrue" >> ./env-variables.txt
 
 # Secret
-rm ./postgresql-secret.txt
-echo "POSTGRES_USER=admin" >> ./postgresql-secret.txt
-echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql-secret.txt
-echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql-secret.txt
-echo "JUPYTER_TOKEN=$encryption_key" >> ./postgresql-secret.txt
+rm ./postgresql/certs/postgresql-secret.txt
+echo "POSTGRES_USER=admin" >> ./postgresql/certs/postgresql-secret.txt
+echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql/certs/postgresql-secret.txt
+echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/certs/postgresql-secret.txt
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up
+docker compose up -d
 
-# Remove Environment Variables
-rm ./postgresql-secret.txt
