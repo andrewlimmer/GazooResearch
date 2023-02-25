@@ -27,6 +27,7 @@ services:
       - ./postgresql/exchange:/home/gazoo/exchange
       - ./postgresql/backups:/home/gazoo/backups
       - ./postgresql/certs:/home/gazoo/certs
+      - ./postgresql/secrets:/home/gazoo/secrets
       - ./logs:/home/gazoo/logs
     networks:
       - clinical_backend
@@ -37,6 +38,7 @@ services:
     volumes:
       - db_volume:/usr/local/pgsql/data
       - ./postgresql/certs:/home/postgres/certs
+      - ./postgresql/secrets:/home/postgres/secrets
     networks:
       - clinical_backend
     healthcheck:
