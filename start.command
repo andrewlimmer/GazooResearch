@@ -21,7 +21,8 @@ echo "OS: ${machine}"
 #
 
 echo "Checking internet connection..."
-echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -t2 > /dev/null 2>&1
+#echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -t2 > /dev/null 2>&1
+wget -q --tries=10 --timeout=20 --spider http://google.com
 if [ $? -eq 0 ]; then
   echo "Online"
 
@@ -143,5 +144,4 @@ echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/secrets/post
 
 echo 'Start Clinical Document Program'
 # Start Docker Compose
-docker compose up -d
-
+docker compose up --build
