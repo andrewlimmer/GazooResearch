@@ -38,21 +38,23 @@ class Patient:
     
     def load_mrn(self, mrn):
             self.mrn = str(mrn)
+            cursor = self.connection.cursor()
 
             #First check if mrn exists
             sql = f"SELECT exists (SELECT 1 FROM clinical_document.q_document WHERE mrn = '{mrn}' LIMIT 1)"
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
+            cursor.execute(sql)
+            data = cursor.fetchall()
             mrn_exists = data[0][0]
             if not mrn_exists:
                 raise ValueError("MRN number not found in the database")
             
             #Gets all the attributes from postgres database.
             sql = f"SELECT DISTINCT tag FROM clinical_document.q_document WHERE mrn = '{mrn}'"
-            self.cursor.execute(sql)
-            data = self.cursor.fetchall()
+            cursor.execute(sql)
+            data = cursor.fetchall()
             
-        
+            cursor.close()
+
             #psycopg2 returns the data each packed into tuples.  Eg. [(first_name),(last_name)] So that needs to be unpacked.
             self.attributes = list(map(lambda a : a[0],data)) 
             if "mrn" in self.attributes:
@@ -77,10 +79,13 @@ class Patient:
         1. There is a bug in setting an attribute due to a weird data entry or something else.
         2. It is hard to access a single cell of data in a DataFrame.  A dictionary is a lot easier. 
         '''
+        cursor = self.connection.cursor()
 
         sql = f" SELECT attribute FROM clinical_document.q_document WHERE mrn = '{self.mrn}' AND tag = '{attribute}'" #Gets all rows of data for each attribute
-        self.cursor.execute(sql)
-        unformatted_data = self.cursor.fetchall()
+        cursor.execute(sql)
+        unformatted_data = cursor.fetchall()
+        cursor.close()
+
         try:
             unformatted_data = list(map(lambda a : a[0], unformatted_data))
         except: 
