@@ -2,6 +2,11 @@
 
 ClinicalDocument is an annotation and analysis tool for medical documents. The goal is to provide an simplified and secure way to extract information for medical research.
 
+## Documentation
+Installation and usage information found in the documentation:
+https://github.com/andrewlimmer/ClinicalDocumentDB/wiki
+
+## Overview
 ### Aggrigate Databases
 Individual local databases can easily be merged to create large data stores<br>
 ![](readme_images/aggrigate-database.png)
@@ -43,7 +48,3 @@ Full access to analytics workbook including R-Statistics, Julia, and Python libr
 
 https://user-images.githubusercontent.com/8246436/217724325-3fae5ec0-1a82-4be5-9f0b-d77493f88fac.mp4
 
-
-## _ClinicalDocument_ Wiki
-Installation and usage information found in the documentation:
-https://github.com/andrewlimmer/ClinicalDocumentDB/wiki
