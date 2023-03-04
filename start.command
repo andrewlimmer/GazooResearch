@@ -3,7 +3,7 @@
 # Relative to start.command file path
 cd "$(dirname "$0")"
 
-# OS Query
+# What OS
 unameOut="$(uname -s)"
 case "${unameOut}" in
     Linux*)     machine=Linux;;
@@ -12,59 +12,24 @@ case "${unameOut}" in
     MINGW*)     machine=MinGw;;
     *)          machine="UNKNOWN:${unameOut}"
 esac
-echo "OS: ${machine}"
 
-# Make Export File
-# mkdir ./postgresql/exports
-# Linus Installation
-# sudo apt install git-all
-#
 
-echo "Checking internet connection..."
-#echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -t2 > /dev/null 2>&1
-wget -q --tries=10 --timeout=20 --spider http://google.com
-if [ $? -eq 0 ]; then
-  echo "Online"
-
-  # Install Homebrew
-  which -s brew
-  if [[ $? != 0 ]] ; then
-    # Install Homebrew
-    echo 'Install Homebrew'
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.bash_profile
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-  else
-    echo 'Update Homebrew'
-    brew update
-  fi
-
-  # Check if Git Exists
-  while ! command -v git &> /dev/null
-  do
-    echo "The computer's password is required for GIT Installation:"
-    brew install git
-  done
-
-  # Check OpenSSL Version
-  while [[ $(openssl version | awk '{print $1}') != "OpenSSL" && $(openssl version | awk '{print $2}') != "1.1.1s" ]]
-  do
-    echo "The computer's password is required for OpenSSL installation:"
-    # Install OpenSSL
-    brew install openssl@1.1
-    brew link --force openssl@1.1
-    echo 'export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"' >> ~/.zshrc
-    source ~/.zshrc
-  done
-
-  # Pull GitHub
-  git pull
-
-else
-  echo "Offline"
+# Check Operating System
+if [[ $machine != "Mac" ]]; then
+  echo "Error: Please run on a Apple Computer"
+  exit 1
 fi
 
+# Check if OpenSSL Exists
+if [[ $(openssl version | awk '{print $1}') != "OpenSSL" ]]; then
+  echo "Error: OpenSSL is required. Installation information found in ReadMe or Wiki"
+  exit 127
+fi
 
+# Check if Git Exists
+if ! command -v git &> /dev/null; then
+  echo "Error: GIT is required. Installation information found in ReadMe or Wiki"
+fi
 
 create_ssl () {
   echo "The computer's password is required for HTTPS certificates generation and acceptance:"
@@ -85,6 +50,7 @@ create_ssl () {
 create_encryption_key() {
   echo
   echo "Randomly Generated (256-bit) Encryption Keys:"
+  openssl rand -hex 32
   openssl rand -hex 32
   openssl rand -hex 32
   openssl rand -hex 32
@@ -128,7 +94,6 @@ done
 # Create Encryption Key
 create_encryption_key
 
-
 # Write Environment Variables File
 rm ./env-variables.txt
 echo "PGADMIN_DEFAULT_EMAIL=admin@admin.com" >> ./env-variables.txt
@@ -142,6 +107,6 @@ echo "POSTGRES_USER=admin" >> ./postgresql/secrets/postgresql-secret.txt
 echo "POSTGRES_PASSWORD=$encryption_key" >> ./postgresql/secrets/postgresql-secret.txt
 echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/secrets/postgresql-secret.txt
 
-echo 'Start Clinical Document Program'
+echo 'Start Clinical Document'
 # Start Docker Compose
 docker compose up -d
