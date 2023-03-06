@@ -32,7 +32,6 @@ Define custom data structures
 https://user-images.githubusercontent.com/8246436/217726292-1ff3c2cd-85af-4f9d-ad5e-5c54aab876d7.mp4
 
 
-
 ### Timelines
 View patient timelines
 
