@@ -22,6 +22,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    user: "${UID}:${GID}"
     volumes:
       - db_data_volume:/home/gazoo/data
       - ./postgresql/exchange:/home/gazoo/exchange
