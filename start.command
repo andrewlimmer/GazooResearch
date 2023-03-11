@@ -15,9 +15,11 @@ esac
 
 
 # Check Operating System
-if [[ $machine != "Mac" ]]; then
-  echo "Error: Please run on a Apple Computer"
-  exit 1
+if [[ $machine == "Mac" || $machine == "Linux" ]]; then
+  echo "Machine: $machine"
+else
+  echo "Error: Please run on a Apple Computer or Linux";
+  exit 1;
 fi
 
 # Check if OpenSSL Exists
@@ -109,4 +111,9 @@ echo "POSTGRES_TDE_PASSWORD=${encryption_key:0:32}" >> ./postgresql/secrets/post
 
 echo 'Start Clinical Document'
 # Start Docker Compose
-docker compose up -d
+if [[ $machine == "Linux" ]]; then
+  echo "Machine: $machine";
+  UID=${UID} GID=${GID} docker compose up -d;
+elif [[ $machine == "Mac" ]]; then
+  UID='' GID='' docker compose up -d;
+fi
