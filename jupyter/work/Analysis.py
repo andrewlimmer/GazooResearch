@@ -12,7 +12,7 @@ class Analysis:
         print("Connect To Database")
         try:            
             # Connect to an existing database
-            self.connection = psycopg2.connect(user=getpass.getpass(prompt='username:'),
+            self.connection = psycopg2.connect(user='admin',#getpass.getpass(prompt='username:'),
                                                 password=getpass.getpass(prompt='encryption key:'),
                                                 host="clinical_db",
                                                 port="5432",
