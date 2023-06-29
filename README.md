@@ -11,6 +11,9 @@ https://github.com/andrewlimmer/ClinicalDocumentDB/wiki
 Individual local databases can easily be merged to create large data stores<br>
 ![](readme_images/aggrigate-database.png)
 
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/ba2a84b6-db25-4bca-82f0-d3b847e4f548
+
+
 ### Import pdf, docx, images, text files
 Import documents that are pdfs, docx, images, and text files
 
