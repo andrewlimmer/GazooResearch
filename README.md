@@ -1,5 +1,3 @@
-
-https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/0a26613b-d365-4f46-b166-4d6b708b95d4
 # Clinical Document
 
 ClinicalDocument is an annotation and analysis tool for medical documents. The goal is to provide an simplified and secure way to extract information for medical research.
