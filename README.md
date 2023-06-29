@@ -1,3 +1,5 @@
+
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/0a26613b-d365-4f46-b166-4d6b708b95d4
 # Clinical Document
 
 ClinicalDocument is an annotation and analysis tool for medical documents. The goal is to provide an simplified and secure way to extract information for medical research.
@@ -38,10 +40,10 @@ https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/ade498d2-452a-
 ### Kaplan Meier Curves
 Easily generate kaplan meier cures
 
-https://user-images.githubusercontent.com/8246436/217722643-6a481112-96f7-4d81-b1fd-6bc0429c4d05.mov
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/9b647e6a-d86b-4eec-89c6-49105e88299f
 
 ### Jupyter Notebook
 Full access to analytics workbook including R-Statistics, Julia, and Python libraries
 
-https://user-images.githubusercontent.com/8246436/217724325-3fae5ec0-1a82-4be5-9f0b-d77493f88fac.mp4
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/788843c3-9f2e-454e-830b-e76d86652dff
 
