@@ -11,34 +11,29 @@ https://github.com/andrewlimmer/ClinicalDocumentDB/wiki
 Individual local databases can easily be merged to create large data stores<br>
 ![](readme_images/aggrigate-database.png)
 
-https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/ba2a84b6-db25-4bca-82f0-d3b847e4f548
-
-
 ### Import pdf, docx, images, text files
 Import documents that are pdfs, docx, images, and text files
 
-https://user-images.githubusercontent.com/8246436/219845376-604022ca-d4db-4f6b-b64f-0d6631831f4e.mp4
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/1c7706be-bee6-4553-b290-e9b4dc916482
 
 ### Basic Clinical Data Annotation
 
-https://user-images.githubusercontent.com/8246436/217722512-f6712c22-95f8-463f-9640-8dfca1444a63.mov
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/6e233a0e-8a40-41bd-ba35-8515d29a5129
 
 ### Annotation
 Annotate diagnosis specific attributes
 
-https://user-images.githubusercontent.com/8246436/217724198-29af85e2-f9a1-40f0-8f23-de9ff47f287f.mp4
-
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/a48bab31-c597-40df-a6dd-716bf2bd2f51
 
 ### Define Data Structures
 Define custom data structures
 
-https://user-images.githubusercontent.com/8246436/217726292-1ff3c2cd-85af-4f9d-ad5e-5c54aab876d7.mp4
-
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/8fa0ceb3-3fea-4051-a19c-55b0cff92fa2
 
 ### Timelines
 View patient timelines
 
-https://user-images.githubusercontent.com/8246436/217722587-38366c18-87e8-4980-a224-ef8445136d12.mov
+https://github.com/andrewlimmer/ClinicalDocumentDB/assets/8246436/ade498d2-452a-4b04-9b14-dfd043afcb80
 
 ### Kaplan Meier Curves
 Easily generate kaplan meier cures
