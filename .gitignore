@@ -1,0 +1,16 @@
+# Ignore 
+**/env-variables.txt
+**/.*
+
+# Except this file
+!.gitignore
+
+# Mac Indexing
+**/.DS_Store
+
+
+# Ingore Cache
+__pycache__
+**/*.ipynb
+.ipynb_checkpoints
+.cache

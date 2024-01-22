@@ -1,0 +1,100 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:1.23.3-alpine
+    #restart: on-failure
+    ports:
+      # only localhost can access the ports
+      - 127.0.0.1:80:80
+      - 127.0.0.1:443:443
+    networks:
+      - clinical_backend
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      - flask
+
+  react:
+    container_name: clinical_react
+    image: andrewlimmer/clinical-document-react:${VERSION}
+    #restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - clinical_backend
+
+  flask:
+    container_name: clinical_flask
+    image: andrewlimmer/clinical-document-flask:${VERSION}
+    #restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    user: "${UID}:${GID}"
+    volumes:
+      - db_data_volume:/home/gazoo/data
+      - ./postgresql/exchange:/home/gazoo/exchange
+      - ./postgresql/backups:/home/gazoo/backups
+      - ./postgresql/certs:/home/gazoo/certs
+      - ./postgresql/secrets:/home/gazoo/secrets
+      - ./logs:/home/gazoo/logs
+    networks:
+      - clinical_backend
+      
+  db:
+    container_name: clinical_db
+    image: andrewlimmer/clinical-document-db:${VERSION}
+    volumes:
+      - db_volume:/usr/local/pgsql/data
+      - ./postgresql/certs:/home/postgres/certs
+      - ./postgresql/secrets:/home/postgres/secrets
+    networks:
+      - clinical_backend
+    healthcheck:
+      test: [ "CMD-SHELL","pg_isready", "-U", "postgres", "-d", "clinical"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+      start_period: 2s
+
+  pgadmin:
+    container_name: clinical_pgadmin
+    image: dpage/pgadmin4:8.2
+    #restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - env-variables.txt
+    volumes:
+      - pgadmin_volume:/var/lib/pgadmin4
+    networks:
+     - clinical_backend
+
+  jupyter:
+    container_name: jupyter
+    image: andrewlimmer/clinical-document-jupyter:${VERSION}
+    #restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    env_file:
+      - env-variables.txt
+    volumes:
+      # Code map
+      - ./jupyter/work:/home/jovyan
+      - db_data_volume:/home/data
+    networks:
+     - clinical_backend
+
+networks:
+  clinical_backend:
+
+volumes:
+  db_data_volume:
+  db_volume:
+  pgadmin_volume:
