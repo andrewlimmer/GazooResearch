@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Default Values
-version=1.25
-echo "Version: $version"
+source ./version
+echo "Version: $VERSION"
 
 # What Architexture
 case $(uname -m) in
@@ -22,10 +22,10 @@ else
 fi
 
 # DB
-docker load --input ./docker-images/clinical-document-db-$version-$architecture.tar
+docker load --input ./docker-images/clinical-document-db-$VERSION-$architecture.tar
 # React
-docker load --input ./docker-images/clinical-document-react-$version-$architecture.tar
+docker load --input ./docker-images/clinical-document-react-$VERSION-$architecture.tar
 # Flask
-docker load --input ./docker-images/clinical-document-flask-$version-$architecture.tar
+docker load --input ./docker-images/clinical-document-flask-$VERSION-$architecture.tar
 # Jupyter
-docker load --input ./docker-images/clinical-document-jupyter-$version-$architecture.tar
+docker load --input ./docker-images/clinical-document-jupyter-$VERSION-$architecture.tar
