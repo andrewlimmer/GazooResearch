@@ -1,4 +1,4 @@
-# ClinicalDocument
+# ClinicalDocument2
 ClinicalDocument is an annotation and analysis tool for medical documents. The goal is to provide an simplified and secure way to extract information for medical research.
 
 ## Documentation
