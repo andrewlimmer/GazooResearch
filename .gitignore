@@ -11,6 +11,5 @@
 
 # Ingore Cache
 __pycache__
-**/*.ipynb
 .ipynb_checkpoints
 .cache
