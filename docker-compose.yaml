@@ -14,10 +14,10 @@ services:
       - ./nginx/certs:/etc/nginx/certs
     depends_on:
       - flask
-
+  
   react:
     container_name: clinical_react
-    image: andrewlimmer/clinical-document-react:${VERSION}
+    image: andrewlimmer/gazoo-research-react:${VERSION}
     #restart: on-failure
     depends_on:
       db:
@@ -27,7 +27,7 @@ services:
 
   flask:
     container_name: clinical_flask
-    image: andrewlimmer/clinical-document-flask:${VERSION}
+    image: andrewlimmer/gazoo-research-flask:${VERSION}
     #restart: on-failure
     depends_on:
       db:
@@ -44,7 +44,7 @@ services:
       
   db:
     container_name: clinical_db
-    image: andrewlimmer/clinical-document-db:${VERSION}
+    image: andrewlimmer/gazoo-research-db:${VERSION}
     volumes:
       - db_volume:/usr/local/pgsql/data
       - ./postgresql/secrets:/home/postgres/secrets
@@ -73,7 +73,7 @@ services:
 
   jupyter:
     container_name: jupyter
-    image: andrewlimmer/clinical-document-jupyter:${VERSION}
+    image: andrewlimmer/gazoo-research-jupyter:${VERSION}
     #restart: on-failure
     depends_on:
       db:
