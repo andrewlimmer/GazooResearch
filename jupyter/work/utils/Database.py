@@ -276,8 +276,74 @@ class Database:
         else: 
             return True
 
+    def does_target_filter_exist(self, mrn, target_id, filters):
+        # Build SQL Logic
+        for idx, filter in enumerate(filters):
+            #print(filter)
+            logic = ''
+            
+            # If icd10 exists
+            if 'icd10' in filter.keys() and filter['icd10'] != None: 
+                #print(f"icd10:{filter['icd10']}")
+                logic = logic + f" (icd10 LIKE '{filter['icd10']}' "
+            else:
+                logic = logic + f" (icd10 IS NULL "
+                
+            
+            # If icd10 exists
+            if 'tag' in filter.keys(): 
+                #print(f"tag:{filter['tag']}")
+                logic = logic + f"AND tag LIKE '{filter['tag']}' "
+        
+            # If attribute exists
+            if 'attribute' in filter.keys(): 
+                #print(f"attribute:{filter['attribute']}")
+                logic = logic + f"AND obj->>'name' LIKE '{filter['attribute']}' "
+        
+            # If attribute values exists
+            if 'value' in filter.keys(): 
+                #print(f"attribute values:{filter['value']}")
+                logic = logic +'AND ('+ build_logical_OR_LIKE_sql_query(column="obj->>'value'", values=filter["value"]) +')'
+            logic = logic + ')'
 
-    
+            # Does mrn-target meet criteria
+            cursor = self.connection.cursor()
+            sql = f"SELECT target.attribute \
+                    FROM \
+                        (SELECT q.icd10, q.tag, q.attribute \
+                        FROM clinical_document.q_document as q, jsonb_array_elements(q.attribute) as attr \
+                        WHERE q.mrn='{mrn}' AND attr->>'name'='target-id' AND attr->>'value'='{target_id}') target, \
+                        jsonb_array_elements(target.attribute) as obj \
+                    WHERE {logic} "
+            #print(f"{sql=}")
+            cursor.execute(sql)
+            count = cursor.fetchone()
+            cursor.close()
+            if count == None: return False
+        return True
+
+    def get_mrn_targets_where_filter(self, filters):
+        cursor = self.connection.cursor()
+        
+        # Get All MRNs & Targets
+        sql = f"SELECT DISTINCT q.mrn as mrn, attr->>'value' as target \
+                FROM clinical_document.q_document as q, jsonb_array_elements(q.attribute) as attr \
+                WHERE attr->>'name'='target-id' AND q.project_uuid='{self.project_uuid}'"
+        cursor.execute(sql)
+        mrn_targets = np.asarray(cursor.fetchall())
+        #print(mrn_targets)
+        valids = np.full(shape=len(mrn_targets), fill_value=False)
+
+        cursor.close()
+
+        # Loop through MRNs
+        filter_exists = np.full(len(mrn_targets), fill_value=False, dtype=bool)
+        for idx, (mrn, target_id) in enumerate(mrn_targets):
+            if self.does_target_filter_exist(mrn, target_id, filters):
+                filter_exists[idx] = True 
+        
+        return mrn_targets[filter_exists].tolist()
+
     def get_mrns_where_sequence(self, filters, max_time_deltas):
         '''
         Get mrns that match a specific sequence.
@@ -448,6 +514,308 @@ class Database:
             if len(np.unique(np.where(diff>=0,True,False)))==2: bool[idx] = True
         return np.all(bool)
 
+
+    
+    # Get Start Date
+    def get_start_date(self, mrn, icd10, tag, occurance = 0):
+        """
+        Gets the start date of a tag. If there are multiple occurance of the tag it will by default find the earliest occurance
+        parameters:
+        mrn: <string>, Medical record number
+        icd10: <string>, icd10 number. eg. c61 or c53.9
+        tag: <sting>, tag
+        occurance: <int>, If multiple occurance of the tag.  0 -> First occurance; 1 -> second occurance; -1  -> Last Occurance
+        """
+        # Connect to DB
+        cursor = self.connection.cursor()
+
+        sql_ = f"SELECT DISTINCT obj->>'value' as date \
+                FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                WHERE project_uuid LIKE '{self.project_uuid}' \
+                AND mrn = '{mrn}' \
+                AND icd10 LIKE '{icd10}' \
+                AND tag LIKE'{tag}' \
+                AND (obj->>'name' = 'start_date' OR obj->>'name' = 'date') \
+                ORDER BY obj->>'value'"
+        cursor.execute(sql_)
+        dates = np.array(cursor.fetchall()).flatten()
+        # Remove None and covert to datetime
+        dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+        dates.sort()
+        
+
+        # Start Date Does Not Exist
+        if len(dates) == 0:
+            date =  None
+        else:
+            date = dates[occurance]
+
+        # Close Cursor
+        cursor.close()
+        return date
+
+    # Get Event Date
+    def get_event_date(self, mrn, icd10, tags, start_date):
+        # Connect to DB
+        cursor = self.connection.cursor()
+
+        # Get Positive Event Date
+        sql = f"SELECT DISTINCT obj->>'value' as date \
+                FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                WHERE project_uuid LIKE '{self.project_uuid}' \
+                AND mrn = '{mrn}' \
+                AND icd10 LIKE '{icd10}' \
+                AND ({build_logical_OR_LIKE_sql_query('tag', tags)}) \
+                AND (obj->>'name' = 'start_date' OR obj->>'name' = 'date') \
+                AND obj->>'value' >= '{start_date}'\
+                ORDER BY obj->>'value'"
+        #print(f"{sql=}")
+        cursor.execute(sql)
+        dates = np.array(cursor.fetchall()).flatten()
+        # Remove None and covert to datetime
+        dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+        dates.sort()
+
+        # Date Exists
+        if len(dates) > 0:
+            date = dates[0]
+            # Event True tag
+            event = True
+        else:
+            # If No positive Get Last Event
+            sql = f"SELECT DISTINCT obj->>'value' as date \
+                    FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                    WHERE project_uuid LIKE '{self.project_uuid}' \
+                    AND mrn = '{mrn}' \
+                    AND (obj->>'name' = 'end_date' OR obj->>'name' = 'date') \
+                    AND obj->>'value' IS NOT NULL \
+                    ORDER BY obj->>'value' DESC \
+                    LIMIT 1;"
+            #print(sql)
+            cursor.execute(sql)
+            dates = np.array(cursor.fetchall()).flatten()
+
+            # Remove None and convert to datetime
+            dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+            #print(f"{mrn=}")
+            #print(f"{dates=}")
+
+            # Remove patient is no dates exist
+            if len(dates) != 0:
+                # Get last Occurance
+                dates.sort()
+                date = dates[-1]
+            else:
+                date = None
+        
+            # Event is False
+            event=False
+
+        # Close Cursor
+        cursor.close()
+        return date, event
+    
+    def kaplan_meier(self, mrns, icd10, start_tag, event_tags):
+        """
+        Generate Kaplan Meier Curves for a patient level event
+        mrns: list<string>
+        start_tag: <string>
+        event_tag: list<string>: 
+        """
+        assert isinstance(mrns, list), f"mrns should be a list of strings. mrns={mrns} type(mrns)={type(mrns)}"
+        assert isinstance(icd10, str), f"icd10 should be a strings. icd10={icd10} type(icd10)={type(icd10)}"
+        assert isinstance(start_tag, str), f"start_tag should be a strings. start_tag={start_tag} type(start_tag)={type(start_tag)}"
+        assert isinstance(event_tags, list), f"event_tags should be a list of strings. event_tags={event_tags} type(mrns)={type(event_tags)}"
+        
+        # Get MRNs
+        durations = []
+        events = []
+        remove_idx = []
+        for idx, mrn in enumerate(mrns):
+            #print(f"{mrn=}", flush=True)
+            start_date = self.get_start_date(mrn, icd10, start_tag, occurance = 0)
+            #print(f"{start_date=}", flush=True)
+            # Check if start date exists
+            if start_date == None:
+                remove_idx.append(idx)
+                continue
+
+            #print(f"{event=}", flush=True)
+            event_date, event_ = self.get_event_date(mrn, icd10, event_tags, start_date)
+            #print(f"{event_date=}", flush=True)
+            # Check if event date exists
+            if event_date == None:
+                remove_idx.append(idx)
+                continue
+
+            durations.append((event_date - start_date).days)
+            events.append(event_)
+            #print(f"{mrn=}", f"{start_date=}", f"{event_date=}", f"{event=}", flush=True)
+
+        # Remove MRNs without start event
+        mrns = np.delete(mrns, remove_idx).tolist()
+        #print(f"{durations=}", flush=True)
+        #print(f"{events=}", flush=True)
+
+        output = {'mrns':mrns, 'durations':durations, 'events':np.asarray(events).astype(int).tolist()}
+
+        return output
+    
+    # Get Start Date
+    def get_target_start_date(self, mrn, target_id, icd10, tag, occurance = 0):
+        """
+        Gets the start date of a tag. If there are multiple occurance of the tag it will by default find the earliest occurance
+        parameters:
+        mrn: <string>, Medical record number
+        icd10: <string>, icd10 number. eg. c61 or c53.9
+        tag: <sting>, tag
+        occurance: <int>, If multiple occurance of the tag.  0 -> First occurance; 1 -> second occurance; -1  -> Last Occurance
+        """
+        # Connect to DB
+        cursor = self.connection.cursor()
+    
+        sql_ = f"SELECT DISTINCT obj->>'value' as date \
+                FROM  \
+                	(SELECT icd10, tag, obj->>'value' as target_id, attribute \
+                	FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                	WHERE project_uuid LIKE '{self.project_uuid}' \
+                    AND mrn = '{mrn}' \
+                	AND icd10 LIKE '{icd10}' \
+                	AND tag LIKE '{tag}' \
+                	AND (obj->>'name' = 'target-id' AND obj->>'value'='{target_id}')) target, \
+                	jsonb_array_elements(target.attribute) obj \
+                WHERE \
+                (obj->>'name' = 'start_date' OR obj->>'name' = 'date') \
+                ORDER BY obj->>'value'"
+        cursor.execute(sql_)
+        dates = np.array(cursor.fetchall()).flatten()
+        #print(dates)
+        # Remove None and covert to datetime
+        dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+        dates.sort()
+        
+    
+        # Start Date Does Not Exist
+        if len(dates) == 0:
+            date =  None
+        else:
+            date = dates[occurance]
+    
+        # Close Cursor
+        cursor.close()
+        return date
+        
+    # Get Event Date
+    def get_target_event_date(self, mrn, target_id, icd10, event_tags, start_date):
+        # Connect to DB
+        cursor = self.connection.cursor()
+    
+        # Get Positive Event Date
+        sql = f"SELECT DISTINCT obj->>'value' as date \
+                FROM  \
+                	(SELECT icd10, tag, obj->>'value' as target_id, attribute \
+                	FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                	WHERE project_uuid LIKE '{self.project_uuid}' \
+                    AND mrn = '{mrn}' \
+                	AND icd10 LIKE '{icd10}' \
+                	AND ({build_logical_OR_LIKE_sql_query('tag', event_tags)}) \
+                	AND (obj->>'name' = 'target-id' AND obj->>'value'='{target_id}')) target, \
+                	jsonb_array_elements(target.attribute) obj \
+                WHERE \
+                (obj->>'name' = 'start_date' OR obj->>'name' = 'date') \
+                ORDER BY obj->>'value'"
+        cursor.execute(sql)
+        dates = np.array(cursor.fetchall()).flatten()
+        # Remove None and covert to datetime
+        dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+        dates.sort()
+    
+        # Date Exists
+        if len(dates) > 0:
+            date = dates[0]
+            # Event True tag
+            event = True
+        else:
+            # If No positive Get Last Event
+            sql = f"SELECT DISTINCT obj->>'value' as date \
+                    FROM clinical_document.q_document, jsonb_array_elements(attribute) obj \
+                    WHERE project_uuid LIKE '{self.project_uuid}' \
+                    AND mrn = '{mrn}' \
+                    AND (obj->>'name' = 'end_date' OR obj->>'name' = 'date') \
+                    AND obj->>'value' IS NOT NULL \
+                    ORDER BY obj->>'value' DESC \
+                    LIMIT 1;"
+            #print(sql)
+            cursor.execute(sql)
+            dates = np.array(cursor.fetchall()).flatten()
+    
+            # Remove None and convert to datetime
+            dates = [datetime.strptime(date, '%Y-%m-%d').date() for date in dates if date is not None]
+            #print(f"{mrn=}")
+            #print(f"{dates=}")
+    
+            # Remove patient is no dates exist
+            if len(dates) != 0:
+                # Get last Occurance
+                dates.sort()
+                date = dates[-1]
+            else:
+                date = None
+        
+            # Event is False
+            event=False
+    
+        # Close Cursor
+        cursor.close()
+        return date, event
+            
+    def target_kaplan_meier(self, mrn_targets, icd10, start_tag, event_tags):
+        """
+        Obtains Kaplan Meier for targets
+        parameters:
+        
+        returns:
+        
+        """
+        assert isinstance(mrn_targets, list), f"mrn_targets should be a 2d list of strings. mrn_targets={mrn_targets} type(mrn_targets)={type(mrn_targets)}"
+        assert np.asarray(mrn_targets).shape[1] == 2, f"mrn_targets should be of shape (,2) list of strings. mrn_targets.shape={np.asarray(mrn_targets).shape}"
+        assert isinstance(icd10, str), f"icd10 should be a strings. icd10={icd10} type(icd10)={type(icd10)}"
+        assert isinstance(start_tag, str), f"start_tag should be a strings. start_tag={start_tag} type(start_tag)={type(start_tag)}"
+        assert isinstance(event_tags, list), f"event_tags should be a list of strings. event_tags={event_tags} type(mrns)={type(event_tags)}"
+        
+        durations = []
+        events = []
+        remove_idx = []
+        # Loop through targets
+        for idx, (mrn, target_id) in enumerate(mrn_targets):
+            #print(mrn, target_id)
+            start_date = self.get_target_start_date(mrn, target_id, icd10, tag=start_tag)
+            #print(f"{start_date=}")
+            # Check if start date exists
+            if start_date == None:
+                remove_idx.append(idx)
+                continue
+                    
+            if start_date==None: continue
+            event_date, event = self.get_target_event_date(mrn, target_id, icd10, event_tags, start_date)
+            #print(f"{event_date=} event:{event}")
+            # Check if event date exists
+            if event_date == None:
+                remove_idx.append(idx)
+                continue
+            
+            durations.append((event_date - start_date).days)
+            events.append(event)
+            #print(f"{mrn=}", f"{target_id=}", f"{start_date=}", f"{event_date=}", f"{event=}", flush=True)
+            
+        mrn_targets = np.delete(mrn_targets, remove_idx, axis=0).tolist()
+        #print(f"{durations=}", flush=True)
+        #print(f"{events=}", flush=True)
+    
+        output = {'mrn_targets':mrn_targets, 'durations':durations, 'events':np.asarray(events).astype(int).tolist()}
+        
+        return output
+        
 class Patient:
     '''A class to provide interface with the database by formatting the data.'''
     def __init__(self, mrn, project_uuid, connection):
