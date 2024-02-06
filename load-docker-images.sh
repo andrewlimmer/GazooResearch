@@ -13,19 +13,19 @@ case $(uname -m) in
     *) architecture="UNKNOWN" ;;
 esac
 
-# Check Architexture
-if [[ $architecture == "amd64" || $architecture == "arm64" ]]; then
-  echo "Architexture: $architecture"
+# Check Operating System
+if [[ $architecture == "arm64" || $architecture == "amd64" ]]; then
+  echo "Architecture: $architecture"
 else
-  echo "Error: Please run on a amd64 or arm chipset computer";
+  echo "Error: Please run on a arm64 or amd64";
   exit 1;
 fi
 
 # DB
-docker load --input ./docker-images/clinical-document-db-$VERSION-$architecture.tar
+docker load --input ./docker-images/gazoo-research-db-$VERSION-$architecture.tar
 # React
-docker load --input ./docker-images/clinical-document-react-$VERSION-$architecture.tar
+docker load --input ./docker-images/gazoo-research-react-$VERSION-$architecture.tar
 # Flask
-docker load --input ./docker-images/clinical-document-flask-$VERSION-$architecture.tar
+docker load --input ./docker-images/gazoo-research-flask-$VERSION-$architecture.tar
 # Jupyter
-docker load --input ./docker-images/clinical-document-jupyter-$VERSION-$architecture.tar
+docker load --input ./docker-images/gazoo-research-jupyter-$VERSION-$architecture.tar
