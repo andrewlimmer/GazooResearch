@@ -56,10 +56,8 @@ c. If you institute litigation or other proceedings against Andrew Lim or any en
 
 
 ## Privacy Policy
-
 This Privacy Policy outlines how GazooResearch collects, uses, and protects your personal information.
 
-### Information We Collect
 
 We collect personal information from you when you:
 - Open GazooResearch
