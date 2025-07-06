@@ -20,7 +20,7 @@ GazooResearch Version Release Date: January 1, 2024
 
 "GazooResearch" or “we” means Andrew Lim's platforms.
 
-By clicking “I Accept” below or by using or distributing any portion or element of the GazooResearch Materials, you agree to be bound by this Agreement.
+By clicking “Accept” or by using or distributing any portion or element of the GazooResearch Program or Materials, you agree to be bound by this Agreement.
 
 1. License Rights and Redistribution.
 
@@ -58,7 +58,6 @@ c. If you institute litigation or other proceedings against Andrew Lim or any en
 ## Privacy Policy
 This Privacy Policy outlines how GazooResearch collects, uses, and protects your personal information.
 
-
 We collect personal information from you when you:
 - Open GazooResearch
 - Contact us
@@ -78,7 +77,7 @@ We use your personal information to:
 We take steps to protect your personal information from unauthorized access, use, or disclosure. These steps include:
 - Using encryption to protect your data
 - Limiting access to your personal information to authorized employees
-- Regularly reviewing our security measures
+- We do not log LLM requests.
 
 ### Your Rights
 
