@@ -5,89 +5,111 @@ GazooResearch is an annotation and analysis tool for medical documents. The goal
 Installation and usage information found in the documentation:
 [https://GazooResearch.com](https://GazooResearch.com)
 
-## License Agreement
-GazooResearch Version Release Date: January 1, 2024
+# Terms of Service & License Agreement
 
-“Agreement” means the terms and conditions for use, reproduction, distribution and modification of the GazooResearch Materials set forth herein.
+For GazooResearch  
+Last Updated: 07/01/2025  
+By installing, accessing, or using GazooResearch App, you ("User" or "you") agree to the following terms and conditions. If you do not agree, you must not use the App.
 
-“Documentation” means the specifications, manuals and documentation accompanying GazooResearch distributed [https://GazooResearch.com](https://GazooResearch.com).
+"App" or “GazooResearch APP” means the software GazooResearch App and/or algorithms, including machine-learning model code, trained model weights, inference-enabling code, training-enabling code, fine-tuning enabling code and other elements of the foregoing distributed by Gazoo Research, Limited Liability Company (LLC) at https://GazooResearch.com.
 
-“Licensee” or “you” means you, or your employer or any other person or entity (if you are entering into this Agreement on such person or entity’s behalf), of the age required under applicable laws, rules or regulations to provide legal consent and that has legal authority to bind your employer or such other person or entity if you are entering in this Agreement on their behalf.
+# 1\. Acceptance of Terms
 
-"GazooResearch" means the software and algorithms, including machine-learning model code, trained model weights, inference-enabling code, training-enabling code, fine-tuning enabling code and other elements of the foregoing distributed by Andrew Lim at drandrewlim.com.
+By using the GazooResearch App, you confirm that you are at least 18 years old (or the age of majority in your jurisdiction) and have the legal capacity to enter into this agreement. If you are accepting on behalf of an organization, you represent that you have authority to bind the organization to these terms.  
+---
 
-“GazooResearch Materials” means, collectively, Andrew’s proprietary GazooResearch and Documentation (and any portion thereof) made available under this Agreement.
+# 2\. License Grant
 
-"GazooResearch" or “we” means Andrew Lim's platforms.
+Subject to your compliance with these terms, Gazoo Research LLC ("we" or "us") grants you a non-exclusive, non-transferable, revocable license to:
 
-By clicking “Accept” or by using or distributing any portion or element of the GazooResearch Program or Materials, you agree to be bound by this Agreement.
+* Install and use the App on your personally owned devices.  
+* Access and use the features and content provided by the App in accordance with these terms.
 
-1. License Rights and Redistribution.
+Restrictions: You may not:
 
-a. Grant of Rights. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under GazooResearch's intellectual property or other rights owned by GazooResearch embodied in the GazooResearch Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the GazooResearch Materials.
+* Modify, reverse-engineer, or decompile the GazooResearch App.  
+* Distribute, sublicense, lease, or rent the GazooResearch App.  
+* Remove or alter any copyright or trademark notices.  
+* Use the GazooResearch App for any illegal or unauthorized purpose.
 
-b. Redistribution and Use.
+---
 
-i. If you distribute or make the GazooResearch Materials, or any derivative works thereof, available to a third party, you shall provide a copy of this Agreement to such third party.
+## 3\. Use of the GazooResearch App
 
-ii. If you receive GazooResearch Materials, or any derivative works thereof, from a Licensee as part of an integrated end user product, then Section 2 of this Agreement will not apply to you.
+You agree to:
 
-iii. You must retain in all copies of the GazooResearch Materials that you distribute the following attribution notice within a “Notice” text file distributed as a part of such copies: GazooResearch is licensed under the MIT License, Copyright © Andrew Lim All Rights Reserved.”
+* Comply with all applicable laws and regulations while using the GazooResearch App.  
+* Not upload or share content that is harmful, defamatory, or infringes on third-party rights.  
+* Provide accurate and complete information during registration.
 
-iv. Your use of the GazooResearch Materials must comply with applicable laws and regulations (including trade compliance laws and regulations) and adhere to the Acceptable Use Policy for the GazooResearch Materials, which is hereby incorporated by reference into this Agreement.
+---
 
-2. Additional Commercial Terms. If, on the GazooResearch release date, the number of documents stored in GazooResearch or services made available by or for Licensee, or Licensee’s affiliates, is greater than 1000 documents in the preceding calendar month, you must request a license from GazooResearch, which Andrew Lim may grant to you in its sole discretion, and you are not authorized to exercise any of the rights under this Agreement unless or until Andrew Lim otherwise expressly grants you such rights.
+## 4\. Prohibited Activities
 
-3. Disclaimer of Warranty. UNLESS REQUIRED BY APPLICABLE LAW, THE GAZOORESEARCH MATERIALS AND ANY OUTPUT AND RESULTS THEREFROM ARE PROVIDED ON AN “AS IS” BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE FOR DETERMINING THE APPROPRIATENESS OF USING OR REDISTRIBUTING THE GAZOORESEARCH MATERIALS AND ASSUME ANY RISKS ASSOCIATED WITH YOUR USE OF THE GAZOORESEARCH MATERIALS AND ANY OUTPUT AND RESULTS.
+You may not:
 
-4. Limitation of Liability. IN NO EVENT WILL GAZOORESEARCH OR ITS AFFILIATES BE LIABLE UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, TORT, NEGLIGENCE, PRODUCTS LIABILITY, OR OTHERWISE, ARISING OUT OF THIS AGREEMENT, FOR ANY LOST PROFITS OR ANY INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL, EXEMPLARY OR PUNITIVE DAMAGES, EVEN IF GAZOORESEARCH OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF ANY OF THE FOREGOING.
+* Use GazooResearch App to transmit viruses, malware, or other harmful code.  
+* Interfere with GazooResearch App’s performance or security (e.g., scraping data, overloading servers).  
+* Attempt to bypass or circumvent any security or access controls.
 
-5. Intellectual Property.
+---
 
-a. No trademark licenses are granted under this Agreement, and in connection with the GazooResearch Materials, neither GazooResearch nor Licensee may use any name or mark owned by or associated with the other or any of its affiliates, except as required for reasonable and customary use in describing and redistributing the GazooResearch Materials.
+## 5\. Intellectual Property
 
-b. Subject to Andrew Lim's ownership of GazooResearch Materials and derivatives made by or for Andrew Lim, with respect to any derivative works and modifications of the GazooResearch Materials that are made by you, as between you and Andrew Lim, you are and will be the owner of such derivative works and modifications.
+* GazooResearch App, including all text, graphics, code, and logos, is the property of Gazoo Research, LLC or its licensors.  
+* You retain ownership of content you submit to the App ("User Content"), but by submitting it, you grant us a non-exclusive, royalty-free, worldwide license to display, reproduce, and distribute such content to operate the App.
 
-c. If you institute litigation or other proceedings against Andrew Lim or any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the GazooResearch Materials or GazooResearch outputs or results, or any portion of any of the foregoing, constitutes infringement of intellectual property or other rights owned or licensable by you, then any licenses granted to you under this Agreement shall terminate as of the date such litigation or claim is filed or instituted. You will indemnify and hold harmless Andrew Lim from and against any claim by any third party arising out of or related to your use or distribution of the GazooResearch Materials.
+---
 
-6. Term and Termination. The term of this Agreement will commence upon your acceptance of this Agreement or access to the GazooResearch Materials and will continue in full force and effect until terminated in accordance with the terms and conditions herein. GazooResearch may terminate this Agreement if you are in breach of any term or condition of this Agreement. Upon termination of this Agreement, you shall delete and cease use of the GazooResearch Materials. Sections 3, 4 and 7 shall survive the termination of this Agreement.
+## 6\. Privacy Policy
 
-7. Governing Law and Jurisdiction. This Agreement will be governed and construed under the laws of the State of California without regard to choice of law principles, and the UN Convention on Contracts for the International Sale of Goods does not apply to this Agreement. The courts of California shall have exclusive jurisdiction of any dispute arising out of this Agreement.
+Your use of the App is governed by our [Privacy Policy](http://localhost:3031/c/link-to-privacy-policy), which explains how we collect, use, and share your data. By using the App, you consent to the practices described therein.  
+---
+
+## 7\. Termination
+
+We may suspend or terminate your access to the App at any time, without notice, if you breach these terms. Upon termination, you must cease using the App and delete all copies.  
+---
+
+## 8\. Disclaimer of Warranties
+
+THE APP IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE APP WILL BE UNINTERRUPTED OR ERROR-FREE.  
+---
+
+## 9\. Limitation of Liability
+
+To the fullest extent permitted by law, we shall not be liable for any indirect, incidental, or consequential damages arising from your use of the App, including data loss, privacy breaches, or reliance on the App’s functionality.  
+---
+
+## 10\. Indemnification
+
+You agree to indemnify and hold harmless Gazoo Research LLC, our affiliates, and employees from claims arising out of your use of the App, including any breach of these terms.  
+---
+
+## 11\. Changes to This Agreement
+
+We may update these terms periodically. If changes are material, we will notify you via email or through the App. Continued use of the App after changes constitutes acceptance of the updated terms.  
+---
+
+## 12\. Governing Law
+
+This agreement is governed by the laws of California, and the United States of America.  
+---
+
+## 13\. Entire Agreement
+
+This document constitutes the entire agreement between you and Gazoo Research, LLC regarding the App. If any provision is found invalid, the remaining terms will remain in effect.  
+---
+
+## 14\. Contact Information
+
+For questions, please contact us at:  
+Gazoo Research, Limited Liability Company  
+[gazooresearch@gmail.com](http://localhost:1420/#)
+
+---
+
+By using GazooResearch, you acknowledge that you have read, understood, and agreed to these Terms of Service & License Agreement.  
 
 
-## Privacy Policy
-This Privacy Policy outlines how GazooResearch collects, uses, and protects your personal information.
-
-We collect personal information from you when you:
-- Open GazooResearch
-- Contact us
-
-- Your computer’s username
-- Your machine uuid
-- Number of documents and number of tags
-
-### How We Use Your Information
-
-We use your personal information to:
-- Communicate with you about your account
-- Monitor Usage
-
-### How We Protect Your Information
-
-We take steps to protect your personal information from unauthorized access, use, or disclosure. These steps include:
-- Using encryption to protect your data
-- Limiting access to your personal information to authorized employees
-- We do not log LLM requests.
-
-### Your Rights
-
-You have the right to:
-- Access your personal information
-- Correct any inaccurate personal information
-- Request that we delete your personal information
-- Opt out of receiving marketing communications from us
-
-Contact Us
-
-If you have any questions about this Privacy Policy, please contact us at andrewlim10@gmail.com.
 
