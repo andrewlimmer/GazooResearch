@@ -109,6 +109,123 @@ Gazoo Research, Limited Liability Company
 
 ---
 
+# Privacy Policy
+
+For GazooResearch  
+Last Updated: 07/01/2025  
+Effective: 07/01/2022  
+At Gazoo Research, Limited Liability Company (LLC) ("we," "us," or "our"), we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use GazooResearch ("App").  
+---
+
+### 1\. Information We Collect
+
+We collect information in the following categories:  
+A. Personal Information
+
+* Device Information: Unique identifiers (e.g., device ID).
+
+B. Usage Data
+
+* Crash reports or error logs to improve performance.  
+* Personal Information: username, terms & service, privacy agreements.  
+* Project Information: project uuid, document count, tag count.
+
+---
+
+### 1\. Information We Do NOT Collect
+
+We do not save/log document or tag information:
+
+* Users may manually initiate AI processing, which sends documents, tags, dictionaries, or information to our servers, but we do not save/store any information.
+
+---
+
+### 2\. How We Use Your Information
+
+We use your data to:
+
+* Provide, maintain, and improve the App.  
+* Process payments and manage your account.  
+* Communicate with you (e.g., updates, support, marketing—only with your consent).  
+* Comply with legal obligations and enforce our Terms of Service.
+
+---
+
+### 3\. Sharing Your Information
+
+We may share your data with:  
+A. Legal Requirements
+
+* To comply with court orders, laws, or to protect our legal rights.
+
+B. Business Transfers
+
+* If we reorganize, merge, or sell our business, user data may be transferred.
+
+C. With Your Consent
+
+* We will not share your data for marketing or third-party purposes without your explicit consent.
+
+---
+
+#### 4\. Data Retention
+
+We retain your personal information only as long as necessary to:
+
+* Fulfill the purposes outlined in this policy.  
+* Comply with legal obligations.  
+* Resolve disputes or enforce our agreements.
+
+You may request deletion of your data at any time (see Your Rights below).  
+---
+
+#### 5\. Security
+
+We implement reasonable technical and organizational measures to protect your data, including network encryption and access controls. However, no system is entirely secure, and we cannot guarantee absolute security.  
+---
+
+### 6\. Your Rights
+
+Depending on your jurisdiction, you may have the right to:
+
+* Access: Request a copy of your data.  
+* Correct: Update inaccurate information.  
+* Delete: Request deletion of your data.  
+* Opt Out: Withdraw consent for marketing or object to data processing.
+
+To exercise these rights, contact us at [gazooresearch@gmail.com](http://localhost:1420/#).  
+---
+
+### 7\. Third-Party Links
+
+The App may link to third-party websites or services (e.g., social media). This Privacy Policy does not cover their data practices.  
+---
+
+### 8\. Children’s Privacy
+
+The App is not intended for users under 13 years old. We do not knowingly collect data from children. If we discover such activity, we will delete the data immediately.  
+---
+
+### 9\. International Data Transfers
+
+If you are outside our jurisdiction, your data may be transferred to countries with different privacy laws. It is up to you (“user”) to ensure the appropriate safeguards are in place.  
+---
+
+### 10\. Changes to This Policy
+
+We may update this Privacy Policy. If changes are significant, we will notify you via email or in-app alerts. Continued use of the App constitutes acceptance of the revised policy.  
+---
+
+### 11\. Contact Us
+
+For questions, please contact us at:  
+Gazoo Research, Limited Liability Company  
+[gazooresearch@gmail.com](http://localhost:1420/#)  
+---
+
+By using GazooResearch, you acknowledge that you have read and agreed to this Privacy Policy.
+
+
 By using GazooResearch, you acknowledge that you have read, understood, and agreed to these Terms of Service & License Agreement.  
 
 
